@@ -59,7 +59,9 @@ public class NewDamBank {
                     break;
                 case 5:
                     // TODO INGRESO
-                    System.out.println("SALDO: \n" + bankAccount.getAccountBalance() + "\n");
+                    System.out.println("Introduzca Cantidad a Ingresar:");
+                    double depositAmount = scanner.nextDouble();
+                    bankAccount.depositAmount(depositAmount);
                     break;
                 case 6:
                     // TODO RETIRADA

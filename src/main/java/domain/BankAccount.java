@@ -1,12 +1,15 @@
 package domain;
 
+import utils.AccountUtils;
+
 import java.util.Arrays;
 
 public class BankAccount {
 
     // ATRIBUTOS CONSTANTES CUENTA BANCARIA
     private final int MAX_ALLOWED_TRANSACTIONS = 100;
-
+    private final int MINIMUM_ACCOUNT_BALANCE = -50;
+    private final int MAXIMUN_UNNOTIFIED_AMOUNT = 3000;
     // ATRIBUTOS VARIABLES CUENTA BANCARIA
     private String iban = "";
     private String accountHolderName = "";
@@ -43,5 +46,24 @@ public class BankAccount {
 
     public double getAccountBalance() {
         return accountBalance;
+    }
+
+    public void depositAmount(double transactionAmount){
+
+        if (transactionAmount > 0) {
+
+            if (AccountUtils.checkTransactionAmount(transactionAmount, MAXIMUN_UNNOTIFIED_AMOUNT)) {
+                System.out.println("AVISO: Notificar a hacienda");
+            }
+            accountBalance += transactionAmount;
+            accountTransactions[this.currentTransactionsIndex] = transactionAmount;
+            currentTransactionsIndex++;
+
+        } else {
+
+            System.out.println("AVISO: No se pueden Ingresar Cantidades Negativas o igual a 0");
+        }
+
+        return;
     }
 }

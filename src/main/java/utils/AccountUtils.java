@@ -11,4 +11,9 @@ public class AccountUtils {
 
         return accountHolderName.matches("^[a-zA-Z][a-zA-Z\\s]+[a-zA-Z]$");
     }
+
+    public static boolean checkTransactionAmount(double transactionAmount, int transactionAmountNotify){
+
+        return transactionAmount > transactionAmountNotify;
+    }
 }
