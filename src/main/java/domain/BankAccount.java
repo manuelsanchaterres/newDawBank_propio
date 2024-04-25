@@ -49,21 +49,49 @@ public class BankAccount {
     }
 
     public void depositAmount(double transactionAmount){
-
-        if (transactionAmount > 0) {
-
-            if (AccountUtils.checkTransactionAmount(transactionAmount, MAXIMUN_UNNOTIFIED_AMOUNT)) {
-                System.out.println("AVISO: Notificar a hacienda");
-            }
-            accountBalance += transactionAmount;
-            accountTransactions[this.currentTransactionsIndex] = transactionAmount;
-            currentTransactionsIndex++;
-
-        } else {
-
-            System.out.println("AVISO: No se pueden Ingresar Cantidades Negativas o igual a 0");
+// COMPROBAMOS SI LA CUANTÍA DEL MOVIMIENTO ES MAYOR A LA NOTIFICABLE A HACIENDA
+        if (AccountUtils.checkTransactionAmount(transactionAmount, MAXIMUN_UNNOTIFIED_AMOUNT)) {
+            System.out.println("\u001B[31m" + "AVISO: Notificar a hacienda." + "\u001B[0m");
         }
+        accountBalance += transactionAmount;
+        accountTransactions[currentTransactionsIndex] = transactionAmount;
+        currentTransactionsIndex++;
 
         return;
+    }
+
+    public void withdrawAmount(double transactionAmount){
+// SI LA TRANSACCIÓN DEJA SALDO POR DEBAJO DE -50 EUROS SE MUESTRA MENSAJE Y NO SE REALIZA LA RETIRADA
+
+
+        if (accountBalance == MINIMUM_ACCOUNT_BALANCE) {
+
+            System.out.println("\u001B[31m" + "AVISO: No puede Retirar Más Dinero." + "\u001B[0m");
+        } else if (accountBalance - transactionAmount < MINIMUM_ACCOUNT_BALANCE) {
+
+            System.out.println("\u001B[31m" + "AVISO: El Saldo de Su Cuenta No Puede Ser Inferior A -50 Euros." + "\u001B[0m");
+            System.out.println("Retire Una Cantidad Inferior o Igual a " + (-MINIMUM_ACCOUNT_BALANCE + accountBalance) + " por favor.");
+       } else {
+
+            if (AccountUtils.checkTransactionAmount(transactionAmount, MAXIMUN_UNNOTIFIED_AMOUNT)) {
+                System.out.println("\u001B[31m" + "AVISO: Notificar a hacienda." + "\u001B[0m");
+            }
+            accountBalance -= transactionAmount;
+            accountTransactions[currentTransactionsIndex] = -transactionAmount;
+            currentTransactionsIndex++;
+
+            if (accountBalance >= MINIMUM_ACCOUNT_BALANCE && accountBalance < 0) {
+                System.out.println("\u001B[31m" + "AVISO: Saldo negativo." + "\u001B[0m");
+            }
+       }
+
+        return;
+    }
+    public void showAccountTransactions () {
+
+        for (int i = 0; i < currentTransactionsIndex; i++) {
+
+            System.out.println("MOVIMIENTO " + (i + 1) + ": " + accountTransactions[i] + " euros.");
+        }
     }
 }

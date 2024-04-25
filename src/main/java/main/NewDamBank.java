@@ -3,6 +3,7 @@ package main;
 import domain.BankAccount;
 import utils.AccountUtils;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class NewDamBank {
@@ -58,23 +59,46 @@ public class NewDamBank {
                     System.out.println("SALDO: \n" + bankAccount.getAccountBalance() + "\n");
                     break;
                 case 5:
-                    // TODO INGRESO
                     System.out.println("Introduzca Cantidad a Ingresar:");
-                    double depositAmount = scanner.nextDouble();
-                    bankAccount.depositAmount(depositAmount);
+                    // GESTIONAR INPUT DOUBLE ESCRITO CON PUNTO EN LUGAR DE COMA
+                    try {
+                        double depositAmount = scanner.nextDouble();
+                        if (depositAmount == 0) {
+                            System.out.println("La Cantidad a Ingresar debe ser Mayor a 0 euros.");
+                        } else {
+
+                            bankAccount.depositAmount(depositAmount);
+                        }
+                    } catch (InputMismatchException exception) { //TODO VERIFICAR PROPAGACIÓN EXCEPCIÓN CON MÁXIMO
+                        System.out.println(exception.getMessage());
+                    } catch (Exception exception) {
+                        System.out.println(exception.getMessage());
+                    }
                     break;
                 case 6:
-                    // TODO RETIRADA
-                    System.out.println("SALDO: \n" + bankAccount.getAccountBalance() + "\n");
+                    System.out.println("Introduzca Cantidad a Retirar:");
+                    double withdrawAmount = scanner.nextDouble();
+                    if (withdrawAmount == 0) {
+                        System.out.println("La Cantidad a Retirar debe ser Mayor a 0 euros.");
+                    } else {
+
+                        bankAccount.withdrawAmount(withdrawAmount);
+                    }
                     break;
                 case 7:
                     // TODO SHOW ACCOUNT TRANSACTIONS
-                    //bankAccount.showAccountTransactions();
+                    bankAccount.showAccountTransactions();
                     break;
                 case 8:
-                    System.out.print("HAS SALIDO DE TU CUENTA");
+                    System.out.print("HAS SALIDO DE TU CUENTA.");
                     return;
+                default:
+
+                    // SI OPCIÓN INVÁLIDA, VUELVO A MOSTRAR OPCIONES DE CUENTA
+                    System.out.println("SELECCIONE UNA OPCIÓN VÁLIDA.");
+                    displayAccountOptions(bankAccount);
+                    break;
             }
-        }while(accountOption >=1 && accountOption <=8);
+        }while(accountOption >= 1 && accountOption <= 8);
     }
 }
