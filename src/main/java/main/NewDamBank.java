@@ -60,7 +60,7 @@ public class NewDamBank {
                     break;
                 case 5:
                     System.out.println("Introduzca Cantidad a Ingresar:");
-                    // GESTIONAR INPUT DOUBLE ESCRITO CON PUNTO EN LUGAR DE COMA
+                    // TRYCATCH PARA GESTIONAR INPUT DOUBLE ESCRITO CON PUNTO EN LUGAR DE COMA
                     try {
                         double depositAmount = scanner.nextDouble();
                         if (depositAmount == 0) {
@@ -69,24 +69,37 @@ public class NewDamBank {
 
                             bankAccount.depositAmount(depositAmount);
                         }
-                    } catch (InputMismatchException exception) { //TODO VERIFICAR PROPAGACIÓN EXCEPCIÓN CON MÁXIMO
-                        System.out.println(exception.getMessage());
+
+                    } catch (InputMismatchException exception) {
+                        System.err.println("Introduzca Decimales con coma (,) y no con punto (.)");
+                        // Consume the invalid token and clear the input stream
+                        scanner.nextLine();
                     } catch (Exception exception) {
-                        System.out.println(exception.getMessage());
+                        System.err.println(exception.getMessage());
                     }
                     break;
                 case 6:
-                    System.out.println("Introduzca Cantidad a Retirar:");
-                    double withdrawAmount = scanner.nextDouble();
-                    if (withdrawAmount == 0) {
-                        System.out.println("La Cantidad a Retirar debe ser Mayor a 0 euros.");
-                    } else {
 
-                        bankAccount.withdrawAmount(withdrawAmount);
+                    System.out.println("Introduzca Cantidad a Retirar:");
+                    try {
+
+                        double withdrawAmount = scanner.nextDouble();
+                        if (withdrawAmount == 0) {
+                            System.out.println("La Cantidad a Retirar debe ser Mayor a 0 euros.");
+                        } else {
+
+                            bankAccount.withdrawAmount(withdrawAmount);
+                        }
+                    }catch (InputMismatchException exception) {
+                        System.err.println("Introduzca Decimales con coma (,) y no con punto (.)");
+                        // Consume the invalid token and clear the input stream
+                        scanner.nextLine();
+                    } catch (Exception exception) {
+                        System.err.println(exception.getMessage());
                     }
+
                     break;
                 case 7:
-                    // TODO SHOW ACCOUNT TRANSACTIONS
                     bankAccount.showAccountTransactions();
                     break;
                 case 8:
